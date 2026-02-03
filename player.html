@@ -520,10 +520,16 @@
 				const playButton = document.getElementById("playButton");
 				const radioStream = document.getElementById("radioStream");
 				const streamSource = document.getElementById("streamSource");
-				const statusWidgetCorse = document.getElementById("statusWidgetCorse");
-				const statusWidgetCotedazur = document.getElementById(
+				let statusWidgetCorse = document.getElementById("statusWidgetCorse");
+				let statusWidgetCotedazur = document.getElementById(
 					"statusWidgetCotedazur",
 				);
+				const statusWidgetCorseTemplate = statusWidgetCorse
+					? statusWidgetCorse.outerHTML
+					: null;
+				const statusWidgetCotedazurTemplate = statusWidgetCotedazur
+					? statusWidgetCotedazur.outerHTML
+					: null;
 
 				const stationModalOverlay = document.getElementById(
 					"stationModalOverlay",
@@ -557,6 +563,42 @@
 					const isCorse = station === "corse";
 					statusWidgetCorse.style.display = isCorse ? "" : "none";
 					statusWidgetCotedazur.style.display = isCorse ? "none" : "";
+				}
+
+				function widgetIsProbablyGone(widgetEl) {
+					if (!widgetEl) return true;
+					const style = window.getComputedStyle(widgetEl);
+					if (style.display === "none" || style.visibility === "hidden")
+						return true;
+					const rect = widgetEl.getBoundingClientRect();
+					return rect.height < 20;
+				}
+
+				function recreateWidget(station) {
+					const container = document.querySelector(".sc-status-widget");
+					if (!container) return;
+					const template =
+						station === "corse"
+							? statusWidgetCorseTemplate
+							: statusWidgetCotedazurTemplate;
+					if (!template) return;
+
+					const oldEl =
+						station === "corse" ? statusWidgetCorse : statusWidgetCotedazur;
+					if (!oldEl || !oldEl.parentNode) return;
+
+					const tmp = document.createElement("div");
+					tmp.innerHTML = template;
+					const freshEl = tmp.firstElementChild;
+					if (!freshEl) return;
+
+					oldEl.parentNode.replaceChild(freshEl, oldEl);
+					if (station === "corse") {
+						statusWidgetCorse = freshEl;
+					} else {
+						statusWidgetCotedazur = freshEl;
+					}
+					showWidgetForStation(hasChosenStation ? currentStation : "corse");
 				}
 
 				function setStation(station, stationUrl) {
@@ -607,6 +649,18 @@
 				showWidgetForStation("corse");
 
 				streamSource.src = "";
+
+				setInterval(() => {
+					const stationToShow = hasChosenStation ? currentStation : "corse";
+					showWidgetForStation(stationToShow);
+					const targetWidget =
+						stationToShow === "corse"
+							? statusWidgetCorse
+							: statusWidgetCotedazur;
+					if (widgetIsProbablyGone(targetWidget)) {
+						recreateWidget(stationToShow);
+					}
+				}, 20000);
 
 				// Gestion du bouton Play/Stop
 				playButton.addEventListener("click", function () {
