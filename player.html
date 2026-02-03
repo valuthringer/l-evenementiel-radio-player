@@ -643,6 +643,7 @@
 				stationButtons.forEach((button) => {
 					button.addEventListener("click", function () {
 						setStation(this.dataset.station, this.dataset.url);
+						startPlayback();
 					});
 				});
 
