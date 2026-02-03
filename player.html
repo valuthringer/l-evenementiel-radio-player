@@ -384,14 +384,14 @@
 						>
 							Corse
 						</button>
-						<button
+						<!-- <button
 							class="station-btn"
 							data-station="cotedazur"
 							data-server-id="2"
 							data-url="https://manager11.streamradio.fr:1445/stream"
 						>
 							Côte d'Azur
-						</button>
+						</button> -->
 					</div>
 				</div>
 
@@ -485,13 +485,13 @@
 						>
 							Corse
 						</button>
-						<button
+						<!-- <button
 							class="modal-btn"
 							data-station="cotedazur"
 							data-url="https://manager11.streamradio.fr:1445/stream"
 						>
 							Côte d'Azur
-						</button>
+						</button> -->
 					</div>
 				</div>
 			</div>
@@ -540,6 +540,7 @@
 
 				let isPlaying = false;
 				let currentStation = null;
+				let currentStationUrl = null;
 				let hasChosenStation = false;
 				let pendingPlayAfterChoice = false;
 
@@ -605,6 +606,7 @@
 					if (!station) return;
 					currentStation = station;
 					hasChosenStation = true;
+					if (stationUrl) currentStationUrl = stationUrl;
 
 					// UI active (si on retrouve le bouton correspondant)
 					stationButtons.forEach((btn) => {
@@ -612,12 +614,28 @@
 					});
 
 					if (stationUrl) {
-						streamSource.src = stationUrl;
+						streamSource.setAttribute("src", stationUrl);
 						radioStream.load();
 					}
 
 					showWidgetForStation(currentStation);
 					stopPlaybackIfNeeded();
+				}
+
+				function hasStreamSource() {
+					const srcAttr = streamSource.getAttribute("src");
+					return !!(srcAttr && srcAttr.trim());
+				}
+
+				function unloadStream() {
+					try {
+						radioStream.pause();
+					} catch (_) {
+						// no-op
+					}
+					radioStream.currentTime = 0;
+					streamSource.removeAttribute("src");
+					radioStream.load();
 				}
 
 				function openStationModal() {
@@ -631,7 +649,11 @@
 				}
 
 				function startPlayback() {
-					if (!streamSource.src) return;
+					if (!hasStreamSource() && currentStationUrl) {
+						streamSource.setAttribute("src", currentStationUrl);
+						radioStream.load();
+					}
+					if (!hasStreamSource()) return;
 					radioStream.play();
 					playButton.innerHTML =
 						'<i class="fa-solid fa-stop" style="margin-right: 8px;"></i> STOP';
@@ -649,7 +671,7 @@
 
 				showWidgetForStation("corse");
 
-				streamSource.src = "";
+				streamSource.removeAttribute("src");
 
 				setInterval(() => {
 					const stationToShow = hasChosenStation ? currentStation : "corse";
@@ -666,8 +688,7 @@
 				// Gestion du bouton Play/Stop
 				playButton.addEventListener("click", function () {
 					if (isPlaying) {
-						radioStream.pause();
-						radioStream.currentTime = 0;
+						unloadStream();
 						playButton.innerHTML =
 							'<i class="fa-solid fa-play" style="margin-right: 8px;"></i> PLAY';
 						playButton.classList.remove("playing");
@@ -698,6 +719,7 @@
 
 				// Gestion de la fin du stream
 				radioStream.addEventListener("ended", function () {
+					unloadStream();
 					playButton.innerHTML =
 						'<i class="fa-solid fa-play" style="margin-right: 8px;"></i> PLAY';
 					playButton.classList.remove("playing");
@@ -707,6 +729,7 @@
 				// Gestion des erreurs
 				radioStream.addEventListener("error", function () {
 					alert("Erreur lors du chargement du flux radio.");
+					unloadStream();
 					playButton.innerHTML =
 						'<i class="fa-solid fa-play" style="margin-right: 8px;"></i> PLAY';
 					playButton.classList.remove("playing");
