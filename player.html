@@ -648,7 +648,19 @@
 					stationModalOverlay.style.display = "none";
 				}
 
+				function resetStream() {
+					try {
+						radioStream.pause();
+						radioStream.currentTime = 0;
+						radioStream.removeAttribute("src");
+						radioStream.load();
+					} catch (e) {
+						console.error("Error resetting stream:", e);
+					}
+				}
+
 				function startPlayback() {
+					resetStream(); // Ensure the stream is fully reset before playing
 					if (!hasStreamSource() && currentStationUrl) {
 						streamSource.setAttribute("src", currentStationUrl);
 						radioStream.load();
@@ -688,7 +700,7 @@
 				// Gestion du bouton Play/Stop
 				playButton.addEventListener("click", function () {
 					if (isPlaying) {
-						unloadStream();
+						resetStream();
 						playButton.innerHTML =
 							'<i class="fa-solid fa-play" style="margin-right: 8px;"></i> PLAY';
 						playButton.classList.remove("playing");
