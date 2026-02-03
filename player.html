@@ -237,6 +237,14 @@
 				transition: all 0.3s ease;
 			}
 
+			.station-btn:disabled,
+			.modal-btn:disabled {
+				background-color: #ccc !important;
+				color: #666 !important;
+				cursor: not-allowed !important;
+				opacity: 0.6 !important;
+			}
+
 			.station-btn:hover {
 				background: #7a0000;
 				color: #ffffff;
@@ -386,14 +394,15 @@
 						>
 							Corse
 						</button>
-						<!-- <button
+						<button
 							class="station-btn"
 							data-station="cotedazur"
 							data-server-id="2"
 							data-url="https://manager11.streamradio.fr:1445/stream"
+							disabled
 						>
 							Côte d'Azur
-						</button> -->
+						</button>
 					</div>
 				</div>
 
@@ -487,13 +496,14 @@
 						>
 							Corse
 						</button>
-						<!-- <button
+						<button
 							class="modal-btn"
 							data-station="cotedazur"
 							data-url="https://manager11.streamradio.fr:1445/stream"
+							disabled
 						>
 							Côte d'Azur
-						</button> -->
+						</button>
 					</div>
 				</div>
 			</div>
