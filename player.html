@@ -402,7 +402,6 @@
 						lang="fr"
 						api-base="https://manager11.streamradio.fr:1420/api/v2"
 						server-id="1"
-						style="display: none"
 						bgcolor="#ffffff"
 						border="none"
 						bgopacity="1"
@@ -604,6 +603,8 @@
 						setStation(this.dataset.station, this.dataset.url);
 					});
 				});
+
+				showWidgetForStation("corse");
 
 				streamSource.src = "";
 
