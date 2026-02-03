@@ -536,12 +536,28 @@
 				let statusWidgetCotedazur = document.getElementById(
 					"statusWidgetCotedazur",
 				);
-				const statusWidgetCorseTemplate = statusWidgetCorse
+				let statusWidgetCorseTemplate = statusWidgetCorse
 					? statusWidgetCorse.outerHTML
 					: null;
-				const statusWidgetCotedazurTemplate = statusWidgetCotedazur
+				let statusWidgetCotedazurTemplate = statusWidgetCotedazur
 					? statusWidgetCotedazur.outerHTML
 					: null;
+
+				function captureTemplates() {
+					statusWidgetCorse =
+						document.getElementById("statusWidgetCorse") || statusWidgetCorse;
+					statusWidgetCotedazur =
+						document.getElementById("statusWidgetCotedazur") ||
+						statusWidgetCotedazur;
+					if (!statusWidgetCorseTemplate && statusWidgetCorse) {
+						statusWidgetCorseTemplate = statusWidgetCorse.outerHTML;
+					}
+					if (!statusWidgetCotedazurTemplate && statusWidgetCotedazur) {
+						statusWidgetCotedazurTemplate = statusWidgetCotedazur.outerHTML;
+					}
+				}
+
+				captureTemplates();
 
 				const stationModalOverlay = document.getElementById(
 					"stationModalOverlay",
@@ -579,39 +595,43 @@
 				}
 
 				function widgetIsProbablyGone(widgetEl) {
-					if (!widgetEl) return true;
+					if (!widgetEl || !widgetEl.parentNode) return true;
 					const style = window.getComputedStyle(widgetEl);
 					if (style.display === "none" || style.visibility === "hidden")
 						return true;
 					const rect = widgetEl.getBoundingClientRect();
-					return rect.height < 20;
+					return rect.height < 20 || rect.width < 20;
 				}
 
 				function recreateWidget(station) {
-					const container = document.querySelector(".sc-status-widget");
-					if (!container) return;
-					const template =
-						station === "corse"
-							? statusWidgetCorseTemplate
-							: statusWidgetCotedazurTemplate;
-					if (!template) return;
+					try {
+						const container = document.querySelector(".sc-status-widget");
+						if (!container) return;
+						const template =
+							station === "corse"
+								? statusWidgetCorseTemplate
+								: statusWidgetCotedazurTemplate;
+						if (!template) return;
 
-					const oldEl =
-						station === "corse" ? statusWidgetCorse : statusWidgetCotedazur;
-					if (!oldEl || !oldEl.parentNode) return;
+						const oldEl =
+							station === "corse" ? statusWidgetCorse : statusWidgetCotedazur;
+						if (!oldEl || !oldEl.parentNode) return;
 
-					const tmp = document.createElement("div");
-					tmp.innerHTML = template;
-					const freshEl = tmp.firstElementChild;
-					if (!freshEl) return;
+						const tmp = document.createElement("div");
+						tmp.innerHTML = template;
+						const freshEl = tmp.firstElementChild;
+						if (!freshEl) return;
 
-					oldEl.parentNode.replaceChild(freshEl, oldEl);
-					if (station === "corse") {
-						statusWidgetCorse = freshEl;
-					} else {
-						statusWidgetCotedazur = freshEl;
+						oldEl.parentNode.replaceChild(freshEl, oldEl);
+						if (station === "corse") {
+							statusWidgetCorse = freshEl;
+						} else {
+							statusWidgetCotedazur = freshEl;
+						}
+						showWidgetForStation(hasChosenStation ? currentStation : "corse");
+					} catch (e) {
+						console.error("Error recreating widget:", e);
 					}
-					showWidgetForStation(hasChosenStation ? currentStation : "corse");
 				}
 
 				function setStation(station, stationUrl) {
@@ -698,6 +718,7 @@
 				streamSource.removeAttribute("src");
 
 				setInterval(() => {
+					captureTemplates();
 					const stationToShow = hasChosenStation ? currentStation : "corse";
 					showWidgetForStation(stationToShow);
 					const targetWidget =
@@ -707,7 +728,7 @@
 					if (widgetIsProbablyGone(targetWidget)) {
 						recreateWidget(stationToShow);
 					}
-				}, 20000);
+				}, 10000);
 
 				// Gestion du bouton Play/Stop
 				playButton.addEventListener("click", function () {
