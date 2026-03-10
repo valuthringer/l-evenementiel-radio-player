@@ -18,58 +18,7 @@
 	<body>
 		<div class="widget-container">
 			<div class="widget-body">
-				<!-- Sélecteur de station -->
-				<div class="station-selector">
-					<label>Choisissez votre station :</label>
-					<div class="station-buttons">
-						<button
-							class="station-btn"
-							data-station="corse"
-							data-server-id="1"
-							data-url="https://manager11.streamradio.fr:1435/stream"
-						>
-							Corse
-						</button>
-						<button
-							class="station-btn"
-							data-station="cotedazur"
-							data-server-id="2"
-							data-url="https://manager11.streamradio.fr:1445/stream"
-						>
-							Côte d'Azur
-						</button>
-					</div>
-				</div>
-
 				<div class="sc-status-widget">
-					<div
-						id="statusWidgetCorse"
-						is="stream-status-widget"
-						lang="fr"
-						api-base="https://manager11.streamradio.fr:1420/api/v2"
-						server-id="1"
-						bgcolor="#ffffff"
-						border="none"
-						bgopacity="1"
-						bgimage="https://manager11.streamradio.fr:1420/media/widgets/logo_levenementiel.png"
-						meta_font_size="15"
-						meta_font_style="normal"
-						meta_font_color="#2d3436"
-						meta_opacity="1"
-						progress_bar_color="#486bcd"
-						progress_bar_bg_color="#e9ecef"
-						progress_bar_height="28"
-						progress_opacity="1"
-						progress_font_color="#2d3436"
-						progress_font_opacity="1"
-						track_image_default="https://manager11.streamradio.fr:1420/media/widgets/logo_levenementiel_XxCivjc.png"
-						track_image_size="100"
-						vote_show="false"
-						vote_buttons_color="#486bcd"
-						vote_results_font_color_neg="#ff4757"
-						vote_results_font_color_pos="#2ecc71"
-						vote_results_font_size="14"
-					></div>
 					<div
 						id="statusWidgetCotedazur"
 						is="stream-status-widget"
@@ -97,7 +46,6 @@
 						vote_results_font_color_neg="#ff4757"
 						vote_results_font_color_pos="#2ecc71"
 						vote_results_font_size="14"
-						style="display: none"
 					></div>
 				</div>
 
@@ -113,33 +61,6 @@
 					<source id="streamSource" src="" type="audio/mpeg" />
 					Votre navigateur ne supporte pas l'élément audio.
 				</audio>
-			</div>
-
-			<!-- Modal de sélection obligatoire (masqué par défaut) -->
-			<div
-				id="stationModalOverlay"
-				class="station-modal-overlay"
-				style="display: none"
-			>
-				<div class="station-modal">
-					<h3>Veuillez choisir une station</h3>
-					<div class="modal-buttons">
-						<button
-							class="modal-btn"
-							data-station="corse"
-							data-url="https://manager11.streamradio.fr:1435/stream"
-						>
-							Corse
-						</button>
-						<button
-							class="modal-btn"
-							data-station="cotedazur"
-							data-url="https://manager11.streamradio.fr:1445/stream"
-						>
-							Côte d'Azur
-						</button>
-					</div>
-				</div>
 			</div>
 
 			<div class="widget-footer">En direct sur l'Evènementiel</div>

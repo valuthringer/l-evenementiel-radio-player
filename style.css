@@ -1,0 +1,363 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.widget-container {
+    width: 100%; /* Toujours prendre 100% de la largeur disponible */
+    min-width: 250px; /* Largeur minimale pour éviter les réductions excessives */
+    max-width: 400px; /* Largeur maximale ajustée */
+    background: #ffffff;
+    border: #ec3d3d 1px solid;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+}
+
+.widget-header {
+    background: #7a0000;
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.widget-header::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: #c40000;
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+.widget-header h2 {
+    font-family: Georgia, serif;
+    font-size: 26px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.5px;
+}
+
+.widget-body {
+    padding: 20px;
+}
+
+.sc-status-widget {
+    position: relative;
+}
+
+.sc-status-widget * {
+    font-family: "Georgia", serif !important;
+    font-size: 17px !important;
+    color: white !important;
+    background-color: #a10000;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Style personnalisé pour le widget */
+.sc-status-widget [is="stream-status-widget"] {
+    font-family: Georgia, serif !important;
+}
+
+/* Amélioration de la barre de progression */
+.progress-bar-container {
+    margin: 20px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style pour les métadonnées */
+.meta-info {
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 12px;
+    margin: 16px 0;
+    border-left: 4px solid #486bcd;
+}
+
+.track-image-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.track-image-container img {
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.track-image-container img:hover {
+    transform: scale(1.05);
+}
+
+/* Animation pour le widget */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.widget-container {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Badge de statut en direct */
+.widget-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #7a0000;
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.live-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fa0000;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 14px;
+    font-family: Georgia, serif;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(255, 71, 87, 0.15);
+    margin-top: 10px;
+}
+
+.live-badge::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* Sélecteur de station */
+.station-selector {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.station-selector label {
+    display: block;
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2d3436;
+    margin-bottom: 12px;
+}
+
+.station-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.station-btn {
+    flex: 1;
+    padding: 8px 16px;
+    border: 2px solid #7a0000;
+    background: #ffffff;
+    color: #7a0000;
+    border-radius: 8px;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.station-btn:disabled,
+.modal-btn:disabled {
+    background-color: #ccc !important;
+    color: #666 !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+}
+
+.station-btn:hover {
+    background: #7a0000;
+    color: #ffffff;
+}
+
+.station-btn.active {
+    background: #7a0000;
+    color: #ffffff;
+}
+
+/* Bouton Play/Stop */
+.play-controls {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#playButton {
+    background: linear-gradient(135deg, #7a0000 0%, #a10000 100%);
+    color: white;
+    border: 3px solid #ffffff;
+    padding: 15px 30px;
+    margin-bottom: -20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow:
+        0 6px 15px rgba(122, 0, 0, 0.4),
+        0 0 20px rgba(122, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#playButton:hover {
+    transform: scale(1.05);
+    box-shadow:
+        0 8px 20px rgba(122, 0, 0, 0.6),
+        0 0 30px rgba(122, 0, 0, 0.4);
+}
+
+#playButton.playing {
+    background: linear-gradient(135deg, #c40000 0%, #ff0000 100%);
+    box-shadow:
+        0 6px 15px rgba(196, 0, 0, 0.6),
+        0 0 30px rgba(196, 0, 0, 0.4);
+}
+
+/* Footer décoratif */
+.widget-footer {
+    padding: 16px 28px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
+    font-family: Georgia, serif;
+    font-size: 13px;
+    color: #6c757d;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .widget-container {
+        max-width: 100%;
+        border-radius: 16px;
+    }
+
+    .widget-header h2 {
+        font-size: 22px;
+    }
+
+    .widget-body {
+        padding: 20px;
+    }
+
+    .station-buttons {
+        flex-direction: column;
+    }
+}
+
+/* Modal de sélection obligatoire */
+.station-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.station-modal {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+}
+
+.station-modal h3 {
+    margin-bottom: 12px;
+    font-family: Georgia, serif;
+}
+
+.station-modal .modal-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.station-modal .modal-btn {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 2px solid #7a0000;
+    background: #fff;
+    color: #7a0000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.station-modal .modal-btn:hover {
+    background: #7a0000;
+    color: #fff;
+}
